@@ -1,55 +1,75 @@
-﻿# 🐍 Keyword Rail Fence Cipher (The Go Checkboard Transposition)
+﻿# 🐍 Simple File Integrity Checker (FIC)
 
 ## ✨ Short Description
 
-This project implements a dynamic **Rail Fence Transposition Cipher** in Go (Golang). It's a classic example of a **polyalphabetic transposition cipher** designed for educational fun rather than security. The core twist is that the **length of the secret keyword** dictates the number of 
-rails (rows) used to rearrange the message, making the transposition pattern dynamic and key-dependent.
+This command-line utility, built in **Go (Golang)**, provides a simple, robust solution for ensuring **data integrity**. It generates cryptographic hashes (**SHA-256**) for any given file. By comparing a newly calculated hash against a known, trusted hash, users can quickly verify that a file has not been **modified, corrupted, or tampered with** since its initial creation or transfer. 
+
+---
 
 ## 📦 Dependencies or Libraries Used
 
-This project uses only the **Go Standard Library**. No external dependencies are required.
+This project uses only the **Go Standard Library**, ensuring minimal setup and high performance.
 
-* mt: For printing output to the console.
-* strings: For text manipulation (uppercase conversion, string replacement, and efficient string building).
+| Library | Purpose |
+| :--- | :--- |
+| `crypto/sha256` | Provides the necessary cryptographic functions to calculate the SHA-256 hash. |
+| `io` | Used for efficient **streaming** of file content into the hash function, avoiding excessive memory use for large files. |
+| `os` | Used for file operations (opening files) and command-line argument handling. |
+| `fmt` | Used for formatted output (e.g., printing the hex-encoded hash). |
+
+---
 
 ## 🛠️ Installation/Setup Instructions
 
-Since this is a single-file Go program with no external dependencies, setup is quick and simple:
+### Prerequisites
 
-1.  **Install Go:** Ensure you have a recent version of Go installed on your system.
-    * You can verify your installation by running go version in your terminal.
-2.  **Save the Code:** Save the entire program code (including the encryptRailFence, decryptRailFence, and main functions) into a single file named cipher.go.
-3.  **Navigate:** Open your terminal and navigate to the directory where you saved cipher.go.
+1.  **Go:** Ensure you have Go installed on your system. You can verify this by running `go version` in your terminal.
+2.  **Version Control (Bonus):** It's recommended to initialize a Git repository for clean version tracking.
+
+### Setup
+
+1.  **Save the Code:** Save the entire program code into a single file named `fic.go`.
+2.  **Navigate:** Open your terminal and navigate to the directory where you saved `fic.go`.
+
+---
 
 ## 🚀 Usage Examples
 
-The example message and keyword are currently defined in the main function.
+The tool supports two primary functions: `generate` (to get the hash) and `verify` (to check the hash).
 
-### 1. Simple Execution
+### 1. Generating a Hash
 
-To run the cipher using the default values set in the main function:
+To generate and print the SHA-256 hash for a specific file:
 
-go run cipher.go
+### Terminal
 
+go run fic.go generate [path/to/your/file.txt]
 
+---
 
---- Cipher Demonstration ---
-Plaintext:      GOISFUNANDEASY
-Keyword (Rails):GOLANG (6 rails)
-----------------------------------
-Encrypted Text: GSAEAOINFDYUSU
-Decrypted Text: GOISFUNANDEASY
+### Example Output:
 
+Calculating SHA-256 for: /home/user/document.pdf
+SHA-256 Hash: 5f4e03d4b6c3f2a1e8d7b9c0a2f1e6d5b4c3a2b1e0d9c8b7a6f5e4d3c2b1a0f9
 
-// Example usage inside the main function:
-plaintext_msg := "ATTACKATDAWN"
-secret_key := "LEMON" // This sets the rail count to 5
-encrypted_output := encryptRailFence(plaintext_msg, secret_key) 
-// encrypted_output will be: AKTADAWC TKN
+---
 
+### 2. Verifying a Hash
 
-// Example usage inside the main function:
-ciphertext := "GSAEAOINFDYUSU"
-key := "GOLANG"
-decrypted_output := decryptRailFence(ciphertext, key) 
-// decrypted_output will be: GOISFUNANDEASY
+To verify a file against a known hash value (e.g., one provided by a software vendor):
+
+go run fic.go verify [path/to/your/file.txt] [known_hash_value]
+
+---
+
+### Example of Success:
+
+go run fic.go verify /home/user/image.jpg 1a2b3c4d5e6f...
+# Output: ✅ Verification SUCCESSFUL. File integrity is confirmed.
+
+---
+
+### Example of Failure (File Tampered/Corrupted):
+
+go run fic.go verify /home/user/image.jpg 000000000000...
+# Output: ❌ Verification FAILED. Hashes do not match.
