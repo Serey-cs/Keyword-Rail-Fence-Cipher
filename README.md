@@ -57,7 +57,7 @@ go version
 2. **Navigate to the project directory**
 
    ```bash
-   cd security-toolkit-app
+   cd security_toolkit
    ```
 
 3. **Run the application**
