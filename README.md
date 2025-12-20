@@ -54,7 +54,7 @@ go version
    git clone <repository-url>
    ```
 
-2. **Navigate to the project directory**
+2. **Navigate to the project directory 2x**
 
    ```bash
    cd security_toolkit
@@ -63,7 +63,7 @@ go version
 3. **Run the application**
 
    ```bash
-   go run main.go encrypt.go decrypt.go verify.go utils.go hash.go
+   go run .
    ```
 
 ---
